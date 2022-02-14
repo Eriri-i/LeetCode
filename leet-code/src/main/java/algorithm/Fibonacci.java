@@ -7,7 +7,7 @@ package algorithm;
 public class Fibonacci {
     
     public int fib(int n) {
-        simpleSolution(n);
+        return simpleSolution(n);
     }
     
     // version 1
@@ -17,15 +17,15 @@ public class Fibonacci {
     }
     
     // version 2
-    public int solutionWithMemoAarry(int n){
+    public int solutionWithMemoArray(int n){
         int[] memo = new int[n+1];
-        return getResult(n,memo);
+        return getResultWithMemoArray(n,memo);
     }
     
-    public int getResultWithMemoAarry(int n,int[] memo){
+    public int getResultWithMemoArray(int n,int[] memo){
         if(n==0||n==1) return n;
         if(0 != memo[n]) return memo[n];
-        memo[n]=getResult(n-1,memo)+getResult(n-2,memo);
+        memo[n]=getResultWithMemoArray(n-1,memo)+getResultWithMemoArray(n-2,memo);
         return memo[n];
     }
     
@@ -47,7 +47,7 @@ public class Fibonacci {
     // version 4
     public int solutionWith2Var(int n){
         if(n<1) return 0;
-        if(n==1|n==2) return 1;
+        if(n==1||n==2) return 1;
         int prev=1;
         int curr=1;
         for(int i =3;i<=n;i++){
