@@ -19,27 +19,19 @@ public class LeetCode19 {
      * @return 链表的头结点
      */
     public ListNode removeNthFromEnd(ListNode head, int n) {
-//        ListNode fast = head;
-//        ListNode slow = head;
-//        ListNode slowPre = head;
-//        for (int i = n-1; i > 0; i--) {
-//            // 表示走到头了
-//            if (fast.next == null) {
-//                return head.next;
-//            }
-//            fast=fast.next;
-//        }
-//        int count=0;
-//        while (fast.next != null) {
-//            if (count != 0) {
-//                slowPre=slowPre.next;
-//            }
-//            slow=slow.next;
-//            fast=fast.next;
-//            count++;
-//        }
-//        slowPre.next=slow.next;
-        return head;
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode fast=dummy;
+        ListNode slow=dummy;
+        for (int i = 0; i < n+1; i++) {
+            fast=fast.next;
+        }
+        while (fast != null) {
+            slow=slow.next;
+            fast=fast.next;
+        }
+        slow.next = slow.next.next;
+        return dummy.next;
     }
 
     public class ListNode {
