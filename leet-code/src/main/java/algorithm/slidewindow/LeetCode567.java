@@ -26,20 +26,23 @@ public class LeetCode567 {
      * @return 结果
      */
     public boolean checkInclusion(String s1, String s2) {
-        Map<Character, Integer> window = new HashMap<>();
-        Map<Character, Integer> need = new HashMap<>();
-        char[] parent = s2.toCharArray();
-        char[] child = s1.toCharArray();
-        for (char c : child) {
-            need.put(c, need.getOrDefault(c, 0) + 1);
+        // 存放要关注的数据
+        HashMap<Character, Integer> window = new HashMap<>();
+        HashMap<Character, Integer> need = new HashMap<>();
+        char[] big = s2.toCharArray();
+        char[] small = s1.toCharArray();
+        // 统计s1中各个字符的数量
+        for (char c : small) {
+            need.put(c, need.getOrDefault(c, 0)+1);
         }
-        int left = 0;
-        int right = 0;
-        int valid = 0;
-        while (right < parent.length) {
-            char c = parent[right];
+        int fast=0;
+        int slow=0;
+        // 记录合法字符的数量
+        int valid=0;
+        while (fast < big.length) {
+            char c = big[fast];
             // 窗口右边界增大，窗口右移
-            right++;
+            fast++;
             // 更新窗口内相关数据
             if (need.containsKey(c)) {
                 window.put(c, window.getOrDefault(c, 0) + 1);
@@ -47,28 +50,68 @@ public class LeetCode567 {
                     valid++;
                 }
             }
-            // debug
-            System.out.printf("window:[%d,%d)%n", left, right);
-
             // 窗口缩小的时机
-            while (right - left >= child.length) {
+            while (valid == need.size()) {
                 // 判断是否找到相关子串
-                if (valid == need.size()) {
+                if (fast - slow == small.length) {
                     return true;
                 }
-                char d = parent[left];
+                char s = big[slow];
                 // 窗口左边界增大，窗口缩小
-                left++;
+                slow++;
                 // 更新窗口内相关数据
-                if (need.containsKey(d)) {
-                    if (window.get(d).equals(need.get(d))) {
+                if (need.containsKey(s)) {
+                    if (need.get(s).equals(window.get(s))) {
                         valid--;
                     }
-                    window.computeIfPresent(d, (key, value) -> value - 1);
+                    window.computeIfPresent(s, (k, v) -> v = v - 1);
                 }
             }
         }
         return false;
+//        Map<Character, Integer> window = new HashMap<>();
+//        Map<Character, Integer> need = new HashMap<>();
+//        char[] parent = s2.toCharArray();
+//        char[] child = s1.toCharArray();
+//        for (char c : child) {
+//            need.put(c, need.getOrDefault(c, 0) + 1);
+//        }
+//        int left = 0;
+//        int right = 0;
+//        int valid = 0;
+//        while (right < parent.length) {
+//            char c = parent[right];
+//            // 窗口右边界增大，窗口右移
+//            right++;
+//            // 更新窗口内相关数据
+//            if (need.containsKey(c)) {
+//                window.put(c, window.getOrDefault(c, 0) + 1);
+//                if (window.get(c).equals(need.get(c))) {
+//                    valid++;
+//                }
+//            }
+//            // debug
+//            System.out.printf("window:[%d,%d)%n", left, right);
+//
+//            // 窗口缩小的时机
+//            while (right - left >= child.length) {
+//                // 判断是否找到相关子串
+//                if (valid == need.size()) {
+//                    return true;
+//                }
+//                char d = parent[left];
+//                // 窗口左边界增大，窗口缩小
+//                left++;
+//                // 更新窗口内相关数据
+//                if (need.containsKey(d)) {
+//                    if (window.get(d).equals(need.get(d))) {
+//                        valid--;
+//                    }
+//                    window.computeIfPresent(d, (key, value) -> value - 1);
+//                }
+//            }
+//        }
+//        return false;
     }
 
     @Test
